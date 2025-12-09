@@ -54,8 +54,14 @@ const ItemInput = ({ item, quantity, onQuantityChange }) => {
                         min="0"
                         value={quantity}
                         onChange={(e) => {
-                            const value = parseInt(e.target.value, 10);
-                            // Ensure non-negative input
+                            const raw = e.target.value;
+                            // Allow empty string to represent "no value"
+                            if (raw === '') {
+                                onQuantityChange(item.id, '');
+                                return;
+                            }
+                            // Parse integer and ensure non-negative
+                            const value = parseInt(raw, 10);
                             onQuantityChange(item.id, isNaN(value) || value < 0 ? 0 : value);
                         }}
                         className="w-full bg-gray-900 text-white text-center text-lg font-mono p-1 rounded-md border-2 border-gray-600 focus:border-cyan-500 transition duration-150 shadow-inner"
@@ -70,10 +76,10 @@ const ItemInput = ({ item, quantity, onQuantityChange }) => {
  * Main App Component
  */
 export default function App() {
-    // Initialize quantities state - all items start at 0
+    // Initialize quantities state - now default is "no value" (empty string) for each item
     const [quantities, setQuantities] = useState(() => {
         return ITEM_DATA.reduce((acc, item) => {
-            acc[item.id] = 0;
+            acc[item.id] = ''; // empty string => input shows empty
             return acc;
         }, {});
     });
@@ -86,21 +92,22 @@ export default function App() {
         }));
     };
 
-    // Calculate total cost
+    // Calculate total cost (treat empty/non-numeric as 0)
     const totalGemCost = useMemo(() => {
         let total = 0;
         ITEM_DATA.forEach(item => {
-            const quantity = quantities[item.id] || 0;
+            const q = quantities[item.id];
+            const quantity = Number(q) || 0;
             total += quantity * item.cost;
         });
         return total.toFixed(1); 
     }, [quantities]);
 
-    // Reset all quantities
+    // Reset all quantities to "no value" (empty)
     const handleClear = () => {
         setQuantities(
             ITEM_DATA.reduce((acc, item) => {
-                acc[item.id] = 0;
+                acc[item.id] = '';
                 return acc;
             }, {})
         );
@@ -126,28 +133,28 @@ export default function App() {
                     {/* Row 1: 4 Items */}
                     <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
                         {row1Items.map(item => (
-                            <ItemInput key={item.id} item={item} quantity={quantities[item.id] || 0} onQuantityChange={handleQuantityChange} />
+                            <ItemInput key={item.id} item={item} quantity={quantities[item.id] || ''} onQuantityChange={handleQuantityChange} />
                         ))}
                     </div>
 
                     {/* Row 2: 3 Items */}
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                         {row2Items.map(item => (
-                            <ItemInput key={item.id} item={item} quantity={quantities[item.id] || 0} onQuantityChange={handleQuantityChange} />
+                            <ItemInput key={item.id} item={item} quantity={quantities[item.id] || ''} onQuantityChange={handleQuantityChange} />
                         ))}
                     </div>
 
                     {/* Row 3: 2 Items */}
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         {row3Items.map(item => (
-                            <ItemInput key={item.id} item={item} quantity={quantities[item.id] || 0} onQuantityChange={handleQuantityChange} />
+                            <ItemInput key={item.id} item={item} quantity={quantities[item.id] || ''} onQuantityChange={handleQuantityChange} />
                         ))}
                     </div>
 
                     {/* Row 4: 2 Items */}
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         {row4Items.map(item => (
-                            <ItemInput key={item.id} item={item} quantity={quantities[item.id] || 0} onQuantityChange={handleQuantityChange} />
+                            <ItemInput key={item.id} item={item} quantity={quantities[item.id] || ''} onQuantityChange={handleQuantityChange} />
                         ))}
                     </div>
 
@@ -170,7 +177,7 @@ export default function App() {
                     {/* Clear Button (CLEAR) */}
                     <button
                         onClick={handleClear}
-                        className="bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-bold py-3 px-6 rounded-xl shadow-xl transition transform hover:scale-105 active:scale-95 text-lg sm:text-xl tracking-widest uppercase border-b-4 border-red-900 hover:border-red-600 flex items-center space-x-2"
+                        className="bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-bold py-3 px-6 rounded-xl shadow-xl transition transform hover:scale-105 active:scale-95 text-lg sm:text-base flex items-center space-x-2"
                         title="Reset all quantities"
                     >
                         <X className="w-6 h-6" />
