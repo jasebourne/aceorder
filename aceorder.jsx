@@ -1,28 +1,26 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { X } from 'lucide-react';
 
-// --- Placeholder Item Data ---
-// The 'cost' value here is the gem cost per unit. Adjust these values as needed.
-// Replace the 'image' paths with your own image URLs or local file paths
+// --- Item Data ---
 const ITEM_DATA = [
     // Row 1
-    { id: 1, name: 'Wood', cost: 6.7, image: '/aceorder/images/Wood.png', color: 'bg-blue-500', defaultQ: 1 },
-    { id: 2, name: 'Iron', cost: 20, image: '/aceorder/images/Iron.png', color: 'bg-blue-500', defaultQ: 5 },
-    { id: 3, name: 'Steel', cost: 6.7, image: '/aceorder/images/Steel.png', color: 'bg-blue-500', defaultQ: 1 },
-    { id: 4, name: 'Crystone', cost: 26.7, image: '/aceorder/images/Crystone.png', color: 'bg-purple-600', defaultQ: 1 },
+    { id: 1, name: 'Wood', cost: 6.7, image: '/aceorder/images/Wood.png', color: 'bg-blue-500' },
+    { id: 2, name: 'Iron', cost: 20, image: '/aceorder/images/Iron.png', color: 'bg-blue-500' },
+    { id: 3, name: 'Steel', cost: 6.7, image: '/aceorder/images/Steel.png', color: 'bg-blue-500' },
+    { id: 4, name: 'Crystone', cost: 26.7, image: '/aceorder/images/Crystone.png', color: 'bg-purple-600' },
 
     // Row 2
-    { id: 5, name: 'Weapon Supply Crate', cost: 13.3, image: '/aceorder/images/WeaponSupplyCrate.png', color: 'bg-blue-500', defaultQ: 2 },
-    { id: 6, name: 'Medical Supply Crate', cost: 6.7, image: '/aceorder/images/MedicalSupplyCrate.png', color: 'bg-blue-500', defaultQ: 6 },
-    { id: 7, name: 'Food Supply Crate', cost: 20, image: '/aceorder/images/FoodSupplyCrate.png', color: 'bg-blue-500', defaultQ: 1 },
+    { id: 5, name: 'Weapon Supply Crate', cost: 13.3, image: '/aceorder/images/WeaponSupplyCrate.png', color: 'bg-blue-500' },
+    { id: 6, name: 'Medical Supply Crate', cost: 6.7, image: '/aceorder/images/MedicalSupplyCrate.png', color: 'bg-blue-500' },
+    { id: 7, name: 'Food Supply Crate', cost: 20, image: '/aceorder/images/FoodSupplyCrate.png', color: 'bg-blue-500' },
   
     // Row 3
-    { id: 8, name: 'Identity Card', cost: 26.7, image: '/aceorder/images/IdentityCard.png', color: 'bg-blue-500', defaultQ: 1 },
-    { id: 9, name: 'Precision Gear', cost: 13.3, image: '/aceorder/images/PrecisionGear.png', color: 'bg-purple-600', defaultQ: 3 },
+    { id: 8, name: 'Identity Card', cost: 26.7, image: '/aceorder/images/IdentityCard.png', color: 'bg-blue-500' },
+    { id: 9, name: 'Precision Gear', cost: 13.3, image: '/aceorder/images/PrecisionGear.png', color: 'bg-purple-600' },
 
     // Row 4
-    { id: 10, name: 'Integrated Chip', cost: 80, image: '/aceorder/images/IntegratedChip.png', color: 'bg-yellow-400', defaultQ: 7 },
-    { id: 11, name: 'Energy Drive Core', cost: 160, image: '/aceorder/images/EnergyDriveCore.png', color: 'bg-yellow-400', defaultQ: 4 },
+    { id: 10, name: 'Integrated Chip', cost: 80, image: '/aceorder/images/IntegratedChip.png', color: 'bg-yellow-400' },
+    { id: 11, name: 'Energy Drive Core', cost: 160, image: '/aceorder/images/EnergyDriveCore.png', color: 'bg-yellow-400' },
 ];
 
 /**
@@ -68,96 +66,19 @@ const ItemInput = ({ item, quantity, onQuantityChange }) => {
     );
 };
 
-
-// --- FIREBASE BOILERPLATE (Mandatory but unused for local calculation) ---
-// This boilerplate is included to satisfy the Canvas runtime requirement for Firebase initialization,
-// even though the application logic itself is purely client-side calculation.
-const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-
-import { initializeApp } from 'firebase/app';
-import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore'; // Included for completeness
-
-const useFirebaseSetup = () => {
-    const [userId, setUserId] = useState(null);
-    const [isAuthReady, setIsAuthReady] = useState(false);
-    const [db, setDb] = useState(null);
-    const [auth, setAuth] = useState(null);
-
-    useEffect(() => {
-        if (!Object.keys(firebaseConfig).length || firebaseConfig.projectId === 'your-project-id') {
-            console.error("Firebase config not available. Running in local mode.");
-            setIsAuthReady(true);
-            setUserId(crypto.randomUUID());
-            return;
-        }
-
-        let app;
-        try {
-            app = initializeApp(firebaseConfig);
-        } catch(e) {
-            // Handle multiple initialization errors gracefully if hot reloading occurs
-            console.warn("Firebase initialization failed, possibly already initialized:", e);
-            return;
-        }
-
-        const firestore = getFirestore(app);
-        const authInstance = getAuth(app);
-        
-        setDb(firestore);
-        setAuth(authInstance);
-
-        const unsubscribe = onAuthStateChanged(authInstance, (user) => {
-            if (user) {
-                setUserId(user.uid);
-            } else {
-                // Sign in anonymously if no user is found after the initial check
-                if (typeof __initial_auth_token === 'undefined' || !__initial_auth_token) {
-                    signInAnonymously(authInstance).catch(e => console.error("Anonymous Sign-in failed:", e));
-                }
-                setUserId('Anonymous-' + crypto.randomUUID().substring(0, 8));
-            }
-            setIsAuthReady(true);
-        });
-
-        const initializeAuth = async () => {
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(authInstance, __initial_auth_token);
-                } else {
-                    await signInAnonymously(authInstance);
-                }
-            } catch (error) {
-                console.error("Firebase Auth Error during custom/anonymous sign-in:", error);
-            }
-        };
-        initializeAuth();
-        return () => unsubscribe();
-    }, []);
-
-    return { userId, isAuthReady, db, auth };
-};
-// --- END FIREBASE BOILERPLATE ---
-
-
 /**
  * Main App Component
  */
 export default function App() {
-    // Initialize Firebase boilerplate to get a user ID for reference
-    const { userId } = useFirebaseSetup(); 
-
-    // Initialize quantities state based on ITEM_DATA defaults
+    // Initialize quantities state - all items start at 0
     const [quantities, setQuantities] = useState(() => {
         return ITEM_DATA.reduce((acc, item) => {
-            // All items are now visible and should be initialized
-            acc[item.id] = item.defaultQ;
+            acc[item.id] = 0;
             return acc;
         }, {});
     });
 
-    // Function to handle quantity changes for a specific item
+    // Handle quantity changes
     const handleQuantityChange = (id, newQuantity) => {
         setQuantities(prev => ({
             ...prev,
@@ -165,18 +86,17 @@ export default function App() {
         }));
     };
 
-    // Memoize the total gem cost calculation
+    // Calculate total cost
     const totalGemCost = useMemo(() => {
         let total = 0;
         ITEM_DATA.forEach(item => {
             const quantity = quantities[item.id] || 0;
             total += quantity * item.cost;
         });
-        // Use toFixed(1) for precision in cost calculation
         return total.toFixed(1); 
     }, [quantities]);
 
-    // Function to reset all quantities to zero
+    // Reset all quantities
     const handleClear = () => {
         setQuantities(
             ITEM_DATA.reduce((acc, item) => {
