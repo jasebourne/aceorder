@@ -1,50 +1,49 @@
 import React, { useState, useMemo, useEffect } from 'react';
-// FIX: Replaced 'Tool' with 'Wrench' as the component 'Tool' is not exported by Lucide-React.
-import { Square, Briefcase, CreditCard, HardHat, RockingChair, PlusSquare, Cog, Droplet, GripVertical, Wrench, Gem, X, PiggyBank } from 'lucide-react';
+import { X, Gem } from 'lucide-react';
 
 // --- Placeholder Item Data ---
 // The 'cost' value here is the gem cost per unit. Adjust these values as needed.
+// Replace the 'image' paths with your own image URLs or local file paths
 const ITEM_DATA = [
     // Row 1
-    { id: 1, name: 'Wood Block', cost: 0.5, icon: Square, color: 'bg-yellow-700', defaultQ: 1 },
-    { id: 2, name: 'Purple Box', cost: 10.0, icon: Briefcase, color: 'bg-purple-600', defaultQ: 5 },
-    { id: 3, name: 'Blue Card', cost: 5.5, icon: CreditCard, color: 'bg-blue-500', defaultQ: 1 },
-    { id: 4, name: 'Yellow Chip', cost: 20.0, icon: HardHat, color: 'bg-yellow-400', defaultQ: 1 },
+    { id: 1, name: 'Wood', cost: 0.5, image: '/images/wood.svg', color: 'bg-yellow-700', defaultQ: 1 },
+    { id: 2, name: 'Iron', cost: 10.0, image: '/images/iron.svg', color: 'bg-purple-600', defaultQ: 5 },
+    { id: 3, name: 'Steel', cost: 5.5, image: '/images/steel.svg', color: 'bg-blue-500', defaultQ: 1 },
+    { id: 4, name: 'Crystone', cost: 20.0, image: '/images/crystone.svg', color: 'bg-yellow-400', defaultQ: 1 },
 
     // Row 2
-    { id: 5, name: 'Gray Stone', cost: 1.0, icon: RockingChair, color: 'bg-gray-500', defaultQ: 2 },
-    { id: 6, name: 'Red Kit', cost: 15.0, icon: PlusSquare, color: 'bg-red-500', defaultQ: 6 },
-    { id: 7, name: 'Gear', cost: 4.0, icon: Cog, color: 'bg-gray-600', defaultQ: 1 },
-    { id: 8, name: 'Red Potion', cost: 8.0, icon: Droplet, color: 'bg-red-600', defaultQ: 1 },
+    { id: 5, name: 'Weapon Supply Crate', cost: 1.0, image: '/images/weapon-crate.svg', color: 'bg-gray-500', defaultQ: 2 },
+    { id: 6, name: 'Medical Supply Crate', cost: 15.0, image: '/images/medical-crate.svg', color: 'bg-red-500', defaultQ: 6 },
+    { id: 7, name: 'Food Supply Crate', cost: 4.0, image: '/images/food-crate.svg', color: 'bg-gray-600', defaultQ: 1 },
+  
+    // Row 3
+    { id: 8, name: 'Identity Card', cost: 8.0, image: '/images/identity-card.svg', color: 'bg-red-600', defaultQ: 1 },
+    { id: 9, name: 'Precision Gear', cost: 2.5, image: '/images/precision-gear.svg', color: 'bg-gray-400', defaultQ: 3 },
 
-    // Row 3 & 4
-    { id: 9, name: 'Steel Bar', cost: 2.5, icon: GripVertical, color: 'bg-gray-400', defaultQ: 3 },
-    // FIX: Updated icon reference to 'Wrench'
-    { id: 10, name: 'Green Box', cost: 12.0, icon: Wrench, color: 'bg-green-600', defaultQ: 7 },
-    { id: 11, name: 'Purple Crystal', cost: 50.0, icon: Gem, color: 'bg-purple-700', defaultQ: 4 },
-    // Filler item for consistent 4x3 grid layout
-    { id: 12, name: 'Placeholder', cost: 0, icon: X, color: 'bg-transparent', defaultQ: 0, hidden: true },
+    // Row 4
+    { id: 10, name: 'Integrated Chip', cost: 12.0, image: '/images/integrated-chip.svg', color: 'bg-green-600', defaultQ: 7 },
+    { id: 11, name: 'Energy Drive Core', cost: 50.0, image: '/images/energy-core.svg', color: 'bg-purple-700', defaultQ: 4 },
 ];
 
 /**
  * ItemInput Component
- * Represents a single item block with its icon and quantity input.
+ * Represents a single item block with its image and quantity input.
  */
 const ItemInput = ({ item, quantity, onQuantityChange }) => {
-    const Icon = item.icon;
-    
     // Calculate the total cost for this single item
     // const itemTotal = (quantity * item.cost).toFixed(2); // Not currently displayed
 
-    if (item.hidden) {
-        return <div className="p-2 aspect-square"></div>; // Empty space for layout
-    }
+    // No need for item.hidden check since the filler item was removed
 
     return (
         <div className="flex items-center space-x-2 p-2 bg-gray-700 rounded-xl shadow-lg border border-gray-600 transition hover:bg-gray-600/50">
-            {/* Icon Block */}
-            <div className={`p-1 w-10 h-10 md:w-12 md:h-12 flex-shrink-0 ${item.color} border-2 border-cyan-400 rounded-xl flex items-center justify-center shadow-lg`}>
-                <Icon className="text-white w-full h-full" strokeWidth={1.5} />
+            {/* Image Block */}
+            <div className={`p-1 w-10 h-10 md:w-12 md:h-12 flex-shrink-0 ${item.color} border-2 border-cyan-400 rounded-xl flex items-center justify-center shadow-lg overflow-hidden`}>
+                <img 
+                    src={item.image} 
+                    alt={item.name}
+                    className="w-full h-full object-contain"
+                />
             </div>
 
             {/* Item Name and Input */}
@@ -152,10 +151,8 @@ export default function App() {
     // Initialize quantities state based on ITEM_DATA defaults
     const [quantities, setQuantities] = useState(() => {
         return ITEM_DATA.reduce((acc, item) => {
-            // Only set non-hidden items
-            if (!item.hidden) {
-                 acc[item.id] = item.defaultQ;
-            }
+            // All items are now visible and should be initialized
+            acc[item.id] = item.defaultQ;
             return acc;
         }, {});
     });
@@ -183,36 +180,57 @@ export default function App() {
     const handleClear = () => {
         setQuantities(
             ITEM_DATA.reduce((acc, item) => {
-                if (!item.hidden) {
-                    acc[item.id] = 0;
-                }
+                acc[item.id] = 0;
                 return acc;
             }, {})
         );
     };
 
+    // --- ITEM GROUPING FOR THE CUSTOM LAYOUT ---
+    const row1Items = ITEM_DATA.slice(0, 4); // 4 items (IDs 1-4)
+    const row2Items = ITEM_DATA.slice(4, 7); // 3 items (IDs 5-7)
+    const row3Items = ITEM_DATA.slice(7, 9); // 2 items (IDs 8-9)
+    const row4Items = ITEM_DATA.slice(9, 11); // 2 items (IDs 10-11)
+
     return (
         <div className="min-h-screen bg-gray-800 flex flex-col items-center p-4 sm:p-8 font-sans">
             <header className="text-white mb-6 text-4xl font-extrabold border-b-4 border-cyan-400 pb-2 tracking-wide text-center">
-                Material Cost Tracker
+                Ace Order Cost Calculator
             </header>
-            
-            <p className="text-xs text-gray-400 mb-4 font-mono">
-                Session ID: {userId || 'Loading...'}
-            </p>
-
+                    
             <main className="w-full max-w-4xl bg-gray-900 p-4 sm:p-6 rounded-3xl shadow-2xl border-2 border-gray-700">
                 
-                {/* The Input Grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {ITEM_DATA.map(item => (
-                        <ItemInput
-                            key={item.id}
-                            item={item}
-                            quantity={quantities[item.id] || 0}
-                            onQuantityChange={handleQuantityChange}
-                        />
-                    ))}
+                {/* The Custom Layout Grid */}
+                <div className="flex flex-col space-y-4">
+                    
+                    {/* Row 1: 4 Items */}
+                    <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                        {row1Items.map(item => (
+                            <ItemInput key={item.id} item={item} quantity={quantities[item.id] || 0} onQuantityChange={handleQuantityChange} />
+                        ))}
+                    </div>
+
+                    {/* Row 2: 3 Items */}
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                        {row2Items.map(item => (
+                            <ItemInput key={item.id} item={item} quantity={quantities[item.id] || 0} onQuantityChange={handleQuantityChange} />
+                        ))}
+                    </div>
+
+                    {/* Row 3: 2 Items */}
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        {row3Items.map(item => (
+                            <ItemInput key={item.id} item={item} quantity={quantities[item.id] || 0} onQuantityChange={handleQuantityChange} />
+                        ))}
+                    </div>
+
+                    {/* Row 4: 2 Items */}
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        {row4Items.map(item => (
+                            <ItemInput key={item.id} item={item} quantity={quantities[item.id] || 0} onQuantityChange={handleQuantityChange} />
+                        ))}
+                    </div>
+
                 </div>
 
                 {/* Footer / Results Area */}
@@ -225,7 +243,7 @@ export default function App() {
                         <Gem className="w-6 h-6 md:w-8 md:h-8 text-green-400 fill-green-400" />
                     </div>
 
-                    {/* Clear Button (XÓA) */}
+                    {/* Clear Button (CLEAR) */}
                     <button
                         onClick={handleClear}
                         className="bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-bold py-3 px-6 rounded-xl shadow-xl transition transform hover:scale-105 active:scale-95 text-lg sm:text-xl tracking-widest uppercase border-b-4 border-red-900 hover:border-red-600 flex items-center space-x-2"
