@@ -6,23 +6,23 @@ import { X } from 'lucide-react';
 // Replace the 'image' paths with your own image URLs or local file paths
 const ITEM_DATA = [
     // Row 1
-    { id: 1, name: 'Wood', cost: 6.7, image: '/images/Wood.png', color: 'bg-blue-500', defaultQ: 1 },
-    { id: 2, name: 'Iron', cost: 20, image: '/images/Iron.png', color: 'bg-blue-500', defaultQ: 5 },
-    { id: 3, name: 'Steel', cost: 6.7, image: '/images/Steel.png', color: 'bg-blue-500', defaultQ: 1 },
-    { id: 4, name: 'Crystone', cost: 26.7, image: '/images/Crystone.png', color: 'bg-purple-600', defaultQ: 1 },
+    { id: 1, name: 'Wood', cost: 6.7, image: '/aceorder/images/Wood.png', color: 'bg-blue-500', defaultQ: 1 },
+    { id: 2, name: 'Iron', cost: 20, image: '/aceorder/images/Iron.png', color: 'bg-blue-500', defaultQ: 5 },
+    { id: 3, name: 'Steel', cost: 6.7, image: '/aceorder/images/Steel.png', color: 'bg-blue-500', defaultQ: 1 },
+    { id: 4, name: 'Crystone', cost: 26.7, image: '/aceorder/images/Crystone.png', color: 'bg-purple-600', defaultQ: 1 },
 
     // Row 2
-    { id: 5, name: 'Weapon Supply Crate', cost: 13.3, image: '/images/WeaponSupplyCrate.png', color: 'bg-blue-500', defaultQ: 2 },
-    { id: 6, name: 'Medical Supply Crate', cost: 6.7, image: '/images/MedicalSupplyCrate.png', color: 'bg-blue-500', defaultQ: 6 },
-    { id: 7, name: 'Food Supply Crate', cost: 20, image: '/images/FoodSupplyCrate.png', color: 'bg-blue-500', defaultQ: 1 },
+    { id: 5, name: 'Weapon Supply Crate', cost: 13.3, image: '/aceorder/images/WeaponSupplyCrate.png', color: 'bg-blue-500', defaultQ: 2 },
+    { id: 6, name: 'Medical Supply Crate', cost: 6.7, image: '/aceorder/images/MedicalSupplyCrate.png', color: 'bg-blue-500', defaultQ: 6 },
+    { id: 7, name: 'Food Supply Crate', cost: 20, image: '/aceorder/images/FoodSupplyCrate.png', color: 'bg-blue-500', defaultQ: 1 },
   
     // Row 3
-    { id: 8, name: 'Identity Card', cost: 26.7, image: '/images/IdentityCard.png', color: 'bg-blue-500', defaultQ: 1 },
-    { id: 9, name: 'Precision Gear', cost: 13.3, image: '/images/PrecisionGear.png', color: 'bg-purple-600', defaultQ: 3 },
+    { id: 8, name: 'Identity Card', cost: 26.7, image: '/aceorder/images/IdentityCard.png', color: 'bg-blue-500', defaultQ: 1 },
+    { id: 9, name: 'Precision Gear', cost: 13.3, image: '/aceorder/images/PrecisionGear.png', color: 'bg-purple-600', defaultQ: 3 },
 
     // Row 4
-    { id: 10, name: 'Integrated Chip', cost: 80, image: '/images/IntegratedChip.png', color: 'bg-yellow-400', defaultQ: 7 },
-    { id: 11, name: 'Energy Drive Core', cost: 160, image: '/images/EnergyDriveCore.png', color: 'bg-yellow-400', defaultQ: 4 },
+    { id: 10, name: 'Integrated Chip', cost: 80, image: '/aceorder/images/IntegratedChip.png', color: 'bg-yellow-400', defaultQ: 7 },
+    { id: 11, name: 'Energy Drive Core', cost: 160, image: '/aceorder/images/EnergyDriveCore.png', color: 'bg-yellow-400', defaultQ: 4 },
 ];
 
 /**
@@ -241,7 +241,7 @@ export default function App() {
                         <span className="mr-4 text-gray-300">Total Cost:</span>
                         <span className="font-mono text-cyan-400 text-3xl md:text-4xl mr-2 drop-shadow-lg">{totalGemCost}</span>
                         <img 
-                            src="/images/Gem.png" 
+                            src="/aceorder/images/Gem.png" 
                             alt="Gem"
                             className="w-6 h-6 md:w-8 md:h-8"
                         />
