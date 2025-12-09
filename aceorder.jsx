@@ -1,28 +1,28 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { X, Gem } from 'lucide-react';
+import { X } from 'lucide-react';
 
 // --- Placeholder Item Data ---
 // The 'cost' value here is the gem cost per unit. Adjust these values as needed.
 // Replace the 'image' paths with your own image URLs or local file paths
 const ITEM_DATA = [
     // Row 1
-    { id: 1, name: 'Wood', cost: 0.5, image: '/images/wood.svg', color: 'bg-yellow-700', defaultQ: 1 },
-    { id: 2, name: 'Iron', cost: 10.0, image: '/images/iron.svg', color: 'bg-purple-600', defaultQ: 5 },
-    { id: 3, name: 'Steel', cost: 5.5, image: '/images/steel.svg', color: 'bg-blue-500', defaultQ: 1 },
-    { id: 4, name: 'Crystone', cost: 20.0, image: '/images/crystone.svg', color: 'bg-yellow-400', defaultQ: 1 },
+    { id: 1, name: 'Wood', cost: 6.7, image: '/images/Wood.png', color: 'bg-blue-500', defaultQ: 1 },
+    { id: 2, name: 'Iron', cost: 20, image: '/images/Iron.png', color: 'bg-blue-500', defaultQ: 5 },
+    { id: 3, name: 'Steel', cost: 6.7, image: '/images/Steel.png', color: 'bg-blue-500', defaultQ: 1 },
+    { id: 4, name: 'Crystone', cost: 26.7, image: '/images/Crystone.png', color: 'bg-purple-600', defaultQ: 1 },
 
     // Row 2
-    { id: 5, name: 'Weapon Supply Crate', cost: 1.0, image: '/images/weapon-crate.svg', color: 'bg-gray-500', defaultQ: 2 },
-    { id: 6, name: 'Medical Supply Crate', cost: 15.0, image: '/images/medical-crate.svg', color: 'bg-red-500', defaultQ: 6 },
-    { id: 7, name: 'Food Supply Crate', cost: 4.0, image: '/images/food-crate.svg', color: 'bg-gray-600', defaultQ: 1 },
+    { id: 5, name: 'Weapon Supply Crate', cost: 13.3, image: '/images/WeaponSupplyCrate.png', color: 'bg-blue-500', defaultQ: 2 },
+    { id: 6, name: 'Medical Supply Crate', cost: 6.7, image: '/images/MedicalSupplyCrate.png', color: 'bg-blue-500', defaultQ: 6 },
+    { id: 7, name: 'Food Supply Crate', cost: 20, image: '/images/FoodSupplyCrate.png', color: 'bg-blue-500', defaultQ: 1 },
   
     // Row 3
-    { id: 8, name: 'Identity Card', cost: 8.0, image: '/images/identity-card.svg', color: 'bg-red-600', defaultQ: 1 },
-    { id: 9, name: 'Precision Gear', cost: 2.5, image: '/images/precision-gear.svg', color: 'bg-gray-400', defaultQ: 3 },
+    { id: 8, name: 'Identity Card', cost: 26.7, image: '/images/IdentityCard.png', color: 'bg-blue-500', defaultQ: 1 },
+    { id: 9, name: 'Precision Gear', cost: 13.3, image: '/images/PrecisionGear.png', color: 'bg-purple-600', defaultQ: 3 },
 
     // Row 4
-    { id: 10, name: 'Integrated Chip', cost: 12.0, image: '/images/integrated-chip.svg', color: 'bg-green-600', defaultQ: 7 },
-    { id: 11, name: 'Energy Drive Core', cost: 50.0, image: '/images/energy-core.svg', color: 'bg-purple-700', defaultQ: 4 },
+    { id: 10, name: 'Integrated Chip', cost: 80, image: '/images/IntegratedChip.png', color: 'bg-yellow-400', defaultQ: 7 },
+    { id: 11, name: 'Energy Drive Core', cost: 160, image: '/images/EnergyDriveCore.png', color: 'bg-yellow-400', defaultQ: 4 },
 ];
 
 /**
@@ -240,7 +240,11 @@ export default function App() {
                     <div className="flex items-center text-white text-xl md:text-3xl font-bold bg-gray-700/70 p-4 rounded-xl shadow-inner border border-cyan-500">
                         <span className="mr-4 text-gray-300">Total Cost:</span>
                         <span className="font-mono text-cyan-400 text-3xl md:text-4xl mr-2 drop-shadow-lg">{totalGemCost}</span>
-                        <Gem className="w-6 h-6 md:w-8 md:h-8 text-green-400 fill-green-400" />
+                        <img 
+                            src="/images/Gem.png" 
+                            alt="Gem"
+                            className="w-6 h-6 md:w-8 md:h-8"
+                        />
                     </div>
 
                     {/* Clear Button (CLEAR) */}
@@ -256,7 +260,7 @@ export default function App() {
             </main>
 
             <footer className="mt-8 text-sm text-gray-500">
-                *This is a local calculation app. Item costs can be adjusted in the ITEM_DATA array.
+                This is a local calculation app created by Jase Bourne for VLC clan.
             </footer>
         </div>
     );
